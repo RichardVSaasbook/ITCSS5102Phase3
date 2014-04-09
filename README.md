@@ -26,10 +26,10 @@ You can then run the executable by typing `phase3`.
 
 First, while in your working directory, type `git status` to check the status of the repository.
 
-For any files under the heading that says "Untracked files", type `git add <filename>` where *<filename>*
+For any files under the heading that says "Untracked files", type `git add <filename>` where *&lt;filename&gt;*
 is the name of the file.
 
-After the files have been added, type `git commit -am "<message>"` where *<message>* is a descriptive
+After the files have been added, type `git commit -am "<message>"` where *&lt;message&gt;* is a descriptive
 message of your choice that gives an overview of the changes made.
 
 Finally, push your changes to the repository by typing `git push origin master`.
