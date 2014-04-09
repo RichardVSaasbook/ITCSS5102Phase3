@@ -1,4 +1,5 @@
 *~
+bin/
 *.o
-main
-main.exe
+phase3
+phase3.exe
