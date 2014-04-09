@@ -1,5 +1,5 @@
 *~
 bin/
 *.o
-phase3
+/phase3
 phase3.exe
