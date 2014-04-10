@@ -8,6 +8,8 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 
+import phase3.gui.WidgetFactory;
+
 /**
  * The MainShell class is the Shell window that runs the
  * entire program.
@@ -28,6 +30,7 @@ class MainShell : Shell {
 			super(display);
 			setText("Phase 3: Simple Image Viewer and Editor");
 			setMenuBar(createMenuBar());
+			setLayout(WidgetFactory.createGridLayout(2));
 	
 			open();
 		}
@@ -67,12 +70,27 @@ class MainShell : Shell {
 					}
 			});
 			
+			MenuItem saveItem = new MenuItem(fileMenu, SWT.PUSH);
+			saveItem.setText("&Save Image");
+			saveItem.addSelectionListener(new class SelectionAdapter {
+				public:
+					override void widgetSelected(SelectionEvent e) {
+						// TODO: open save image file dialog.
+					}
+			});
+			
 			// Edit Menu.
 			Menu editMenu = new Menu(this, SWT.DROP_DOWN);
 			
 			MenuItem editItem = new MenuItem(menuBar, SWT.CASCADE);
 			editItem.setText("&Edit");
 			editItem.setMenu(editMenu);
+			editItem.addSelectionListener(new class SelectionAdapter {
+				public:
+					override void widgetSelected(SelectionEvent e) {
+						// TODO: invert all colors in the image.
+					}
+			});
 			
 			MenuItem invertItem = new MenuItem(editMenu, SWT.PUSH);
 			invertItem.setText("&Invert Image");
