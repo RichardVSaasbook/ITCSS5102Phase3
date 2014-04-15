@@ -44,6 +44,30 @@ class RGBColor {
 		}
 		
 		/**
+		 * Returns: This RGBColor's red value.
+		 * Date: April 15, 2014
+		 */
+		ubyte getRed() {
+			return red;
+		}
+		
+		/**
+		 * Returns: This RGBColor's green value.
+		 * Date: April 15, 2014
+		 */
+		ubyte getGreen() {
+			return green;
+		}
+		
+		/**
+		 * Returns: This RGBColor's blue value.
+		 * Date: April 15, 2014
+		 */
+		ubyte getBlue() {
+			return blue;
+		}
+		
+		/**
 		 * Converts this RGBColor to an HSLColor.
 		 *
 		 * See_Also:
@@ -93,19 +117,6 @@ class RGBColor {
 			}
 			
 			return new HSLColor(hue, saturation, lightness);
-		}
-		
-		/**
-		 * Converts this RGBColor into a Color usable by the
-		 * SWT library.
-		 *
-		 * Params:
-		 *		device = The main Display's Device.
-		 * Returns: An SWT Color.
-		 * Date: April 10, 2014
-		 */
-		Color toSWTColor(Device device) {
-			return new Color(device, red, green, blue);
 		}
 	private:
 		ubyte red,

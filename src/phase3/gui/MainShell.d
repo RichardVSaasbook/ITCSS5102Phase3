@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 
+import phase3.color.ColorManager;
 import phase3.gui.ColorSelector;
 import phase3.gui.WidgetFactory;
 
@@ -27,12 +28,12 @@ class MainShell : Shell {
 		 * 		display = The display to draw the Shell from.
 		 * Date: April 9, 2014
 		 */
-		this(Display display) {
+		this(Display display, ColorManager colorManager) {
 			super(display);
 			setText("Phase 3: Simple Image Viewer and Editor");
 			setMenuBar(createMenuBar());
 			setLayout(WidgetFactory.createGridLayout(2));
-			new ColorSelector(this, display.getCurrent());
+			new ColorSelector(this, colorManager);
 	
 			open();
 		}

@@ -1,9 +1,12 @@
 import org.eclipse.swt.widgets.Display;
+
+import phase3.color.ColorManager;
 import phase3.gui.MainShell;
 
 void main () {
 	Display display = new Display;
-	MainShell shell = new MainShell(display);
+	ColorManager colorManager = new ColorManager(display.getCurrent());
+	MainShell shell = new MainShell(display, colorManager);
 
 	while (!shell.isDisposed) {
 		if (!display.readAndDispatch()) {
@@ -11,5 +14,6 @@ void main () {
 		}
 	}
 
+	colorManager.disposeColors();
 	display.dispose();
 }

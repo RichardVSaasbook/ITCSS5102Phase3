@@ -91,19 +91,6 @@ class HSLColor {
 			
 			return color;
 		}
-		
-		/**
-		 * Converts this HSLColor into a Color usable by the
-		 * SWT library.
-		 *
-		 * Params:
-		 *		device = The main Display's Device.
-		 * Returns: An SWT Color.
-		 * Date: April 10, 2014
-		 */
-		Color toSWTColor(Device device) {
-			return toRGBColor().toSWTColor(device);
-		}
 	private:
 		uint hue;
 		real saturation,

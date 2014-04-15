@@ -5,7 +5,7 @@ First, download and install [Git](http://git-scm.com/downloads).
 Then, clone the repository to a working directory of your choice.
 
 ```
-git clone --recursive https://github.com/RichardVSaasbook
+git clone --recursive https://github.com/RichardVSaasbook/ITCSS5102Phase3
 ```
 
 Finally, build DWT.
@@ -17,7 +17,7 @@ rdmd build base swt
 
 ### Running the Code
 
-First, build the code by typing `build-win` while in the working directory. If everything builds
+First, build the code by typing `build-win.bat` while in the working directory. If everything builds
 correctly, there should be no errors from the output.
 
 You can then run the executable by typing `phase3`.
