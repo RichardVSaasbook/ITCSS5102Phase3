@@ -1,10 +1,14 @@
 module phase3.gui.ColorSelector;
 
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Label;
@@ -12,8 +16,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 
 import phase3.color.ColorManager;
-import phase3.color.HSLColor;
-import phase3.color.RGBColor;
 import phase3.gui.WidgetFactory;
 
 /**
@@ -37,22 +39,26 @@ class ColorSelector : Composite {
 		 */
 		this(Shell parent, ColorManager colorManager) {
 			super(parent, SWT.NO_BACKGROUND);
+			this.parent = parent;
 			this.colorManager = colorManager;
 			
-			changeColor(new HSLColor(60, 1, 0.5));
 			setLayout(WidgetFactory.createGridLayout(2));
 			setupWidgets();
+			changeColor(new RGB(255, 255, 0));
 		}
 		
 	private:
+		Shell parent;
 		Color activeColor;
 		ColorManager colorManager;
+		Canvas canvas;
 		
 		/**
 		 * Changes the color to the given color.
 		 */
-		void changeColor(HSLColor hslColor) {
-			activeColor = colorManager.getColor(hslColor);
+		void changeColor(RGB rgb) {
+			activeColor = colorManager.getColor(rgb);
+			canvas.redraw();
 		}
 	
 		void setupWidgets() {
@@ -61,11 +67,27 @@ class ColorSelector : Composite {
 			colorLabel.setText("Color");
 			
 			// Canvas
-			Canvas canvas = new Canvas(this, SWT.NO_BACKGROUND | SWT.PUSH);
+			canvas = new Canvas(this, SWT.NO_BACKGROUND | SWT.PUSH);
 			GridData gridData = new GridData();
 			gridData.widthHint = 100;
 			gridData.heightHint = 24;
 			canvas.setLayoutData(gridData);
+			canvas.addMouseListener(new class MouseListener {
+				public:
+					override void mouseDoubleClick(MouseEvent e) {}
+					override void mouseUp(MouseEvent e) {}
+					
+					override void mouseDown(MouseEvent e) {
+						// Open up a ColorDialog.
+						ColorDialog colorDialog = new ColorDialog(parent);
+						colorDialog.setRGB(activeColor.getRGB());
+						RGB rgb = colorDialog.open();
+						
+						if (rgb !is null) {
+							changeColor(rgb);
+						}
+					}
+			});
 			canvas.addPaintListener(new class PaintListener {
 				public:
 					override void paintControl(PaintEvent e) {

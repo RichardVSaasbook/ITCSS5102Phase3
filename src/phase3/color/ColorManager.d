@@ -2,6 +2,7 @@ module phase3.color.ColorManager;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.RGB;
 
 import phase3.color.HSLColor;
 import phase3.color.RGBColor;
@@ -38,29 +39,36 @@ class ColorManager {
 		}
 		
 		/**
-		 * Adds a Color resource to be kept track of.
+		 * Increments the reference count for the given Color
+		 * by one.
 		 *
 		 * Params:
-		 * 		color = The Color resource to keep track of.
-		 * Date: April 15, 2014
+		 * 		color = The Color being referenced.
+		 * Date: April 16, 2014
 		 */
-		void addColor(Color color) {
-			long colorId = getColorId(color.getRed(), color.getGreen(), color.getBlue());
-			colors[colorId] = color;
+		void addRef(Color color) {
+			long colorId = getColorId(color.getRGB());
+			long refCount = refs.get(colorId, 0);
+			refs[colorId] = refCount + 1;
 		}
 		
 		/**
-		 * Removes and disposes the Color resource to stop
-		 * keeping track of it.
+		 * Decrements the reference count for the given Color
+		 * by one. If the reference count reaches 0, the Color
+		 * resource is disposed.
 		 *
 		 * Params:
-		 *		color = The Color resource to remove.
-		 * Date: April 15, 2014
+		 *		color = The Color being referenced.
+		 * Date: April 16, 2014
 		 */
-		void removeColor(Color color) {
-			long colorId = getColorId(color.getRed(), color.getGreen(), color.getBlue());
-			colors[colorId].dispose();
-			colors.remove(colorId);
+		void removeRef(Color color) {
+			long colorId = getColorId(color.getRGB());
+			long refCount = refs.get(colorId, 0);
+			refs[colorId] = refCount - 1;
+			
+			if (refs[colorId] == 0) {
+				colors[colorId].dispose();
+			}
 		}
 		
 		/**
@@ -73,32 +81,23 @@ class ColorManager {
 		 * Returns: The corresponding Color resource.
 		 * Date: April 15, 2014
 		 */
-		Color getColor(RGBColor rgbColor) {
-			long colorId = getColorId(rgbColor.getRed(), rgbColor.getGreen(), rgbColor.getBlue());
+		Color getColor(RGB rgb) {
+			long colorId = getColorId(rgb);
 			
 			if (colorId !in colors) {
-				colors[colorId] = new Color(device, rgbColor.getRed(), rgbColor.getGreen(), rgbColor.getBlue());
+				colors[colorId] = new Color(device, rgb);
+			}
+			
+			if (colors[colorId].isDisposed) {
+				colors[colorId] = new Color(device, rgb);
 			}
 			
 			return colors[colorId];
 		}
 		
-		/**
-		 * Returns the Color resource that matches the given
-		 * HSLColor, creating it if necessary.
-		 *
-		 * Params:
-		 *		hslColor = The HSLColor corresponding to the requested
-		 *				   Color.
-		 * Returns: The corresponding Color resource.
-		 * Date: April 15, 2014
-		 */
-		Color getColor(HSLColor hslColor) {
-			return getColor(hslColor.toRGBColor());
-		}
-		
 	private:
 		Color[long] colors;
+		long[long] refs;
 		Device device;
 		
 		/**
@@ -112,7 +111,7 @@ class ColorManager {
 		 * Returns: The id of the Color resource.
 		 * Date: April 15, 2014
 		 */
-		long getColorId(int red, int green, int blue) {
-			return red * 255 * 255 + green * 255 + blue;
+		long getColorId(RGB rgb) {
+			return rgb.red * 255 * 255 + rgb.green * 255 + rgb.blue;
 		}
 }

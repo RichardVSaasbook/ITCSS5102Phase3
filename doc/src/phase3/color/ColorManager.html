@@ -36,56 +36,41 @@ April 15, 2014<br><br>
 April 15, 2014<br><br>
 
 </dd>
-<dt><big><a name="ColorManager.addColor"></a>void <u>addColor</u>(Color <i>color</i>);
+<dt><big><a name="ColorManager.addRef"></a>void <u>addRef</u>(Color <i>color</i>);
 </big></dt>
-<dd>Adds a Color resource to be kept track of.
+<dd>Increments the reference count for the given Color
+ by one.
 <br><br>
 <b>Params:</b><br>
 <table><tr><td>Color <i>color</i></td>
-<td>The Color resource to keep track of.</td></tr>
+<td>The Color being referenced.</td></tr>
 </table><br>
 <b>Date:</b><br>
-April 15, 2014<br><br>
+April 16, 2014<br><br>
 
 </dd>
-<dt><big><a name="ColorManager.removeColor"></a>void <u>removeColor</u>(Color <i>color</i>);
+<dt><big><a name="ColorManager.removeRef"></a>void <u>removeRef</u>(Color <i>color</i>);
 </big></dt>
-<dd>Removes and disposes the Color resource to stop
- keeping track of it.
+<dd>Decrements the reference count for the given Color
+ by one. If the reference count reaches 0, the Color
+ resource is disposed.
 <br><br>
 <b>Params:</b><br>
 <table><tr><td>Color <i>color</i></td>
-<td>The Color resource to remove.</td></tr>
+<td>The Color being referenced.</td></tr>
 </table><br>
 <b>Date:</b><br>
-April 15, 2014<br><br>
+April 16, 2014<br><br>
 
 </dd>
-<dt><big><a name="ColorManager.getColor"></a>Color <u>getColor</u>(RGBColor <i>rgbColor</i>);
+<dt><big><a name="ColorManager.getColor"></a>Color <u>getColor</u>(RGB <i>rgb</i>);
 </big></dt>
 <dd>Returns the Color resource that matches the given
  RGBColor, creating it if necessary.
 <br><br>
 <b>Params:</b><br>
-<table><tr><td>RGBColor <i>rgbColor</i></td>
+<table><tr><td>rgbColor</td>
 <td>The RGBColor corresponding to the requested
-				   Color.</td></tr>
-</table><br>
-<b>Returns:</b><br>
-The corresponding Color resource.
-<br><br>
-<b>Date:</b><br>
-April 15, 2014<br><br>
-
-</dd>
-<dt><big><a name="ColorManager.getColor"></a>Color <u>getColor</u>(HSLColor <i>hslColor</i>);
-</big></dt>
-<dd>Returns the Color resource that matches the given
- HSLColor, creating it if necessary.
-<br><br>
-<b>Params:</b><br>
-<table><tr><td>HSLColor <i>hslColor</i></td>
-<td>The HSLColor corresponding to the requested
 				   Color.</td></tr>
 </table><br>
 <b>Returns:</b><br>
