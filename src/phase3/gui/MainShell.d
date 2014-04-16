@@ -1,7 +1,9 @@
 module phase3.gui.MainShell;
 
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -32,8 +34,10 @@ class MainShell : Shell {
 			super(display);
 			setText("Phase 3: Simple Image Viewer and Editor");
 			setMenuBar(createMenuBar());
-			setLayout(WidgetFactory.createGridLayout(2));
+			setLayout(WidgetFactory.createGridLayout(2, true));
 			new ColorSelector(this, colorManager);
+			ScrolledComposite editor = WidgetFactory.createScrolledComposite(this);
+			ScrolledComposite preview = WidgetFactory.createScrolledComposite(this);
 	
 			open();
 		}

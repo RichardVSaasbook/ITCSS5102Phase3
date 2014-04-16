@@ -43,11 +43,11 @@ class ColorManager {
 		 * by one.
 		 *
 		 * Params:
-		 * 		color = The Color being referenced.
+		 * 		rgb = The Color being referenced.
 		 * Date: April 16, 2014
 		 */
-		void addRef(Color color) {
-			long colorId = getColorId(color.getRGB());
+		void addRef(RGB rgb) {
+			long colorId = getColorId(rgb);
 			long refCount = refs.get(colorId, 0);
 			refs[colorId] = refCount + 1;
 		}
@@ -58,11 +58,11 @@ class ColorManager {
 		 * resource is disposed.
 		 *
 		 * Params:
-		 *		color = The Color being referenced.
+		 *		rgb = The Color being referenced.
 		 * Date: April 16, 2014
 		 */
-		void removeRef(Color color) {
-			long colorId = getColorId(color.getRGB());
+		void removeRef(RGB rgb) {
+			long colorId = getColorId(rgb);
 			long refCount = refs.get(colorId, 0);
 			refs[colorId] = refCount - 1;
 			

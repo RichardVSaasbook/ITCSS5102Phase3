@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Canvas;
@@ -42,9 +43,18 @@ class ColorSelector : Composite {
 			this.parent = parent;
 			this.colorManager = colorManager;
 			
-			setLayout(WidgetFactory.createGridLayout(2));
+			setLayout(WidgetFactory.createGridLayout(2, false));
+			setLayoutData(WidgetFactory.createGridData(2));
 			setupWidgets();
-			changeColor(new RGB(255, 255, 0));
+			changeColor(new RGB(255, 255, 255));
+		}
+		
+		/**
+		 * Returns: The active Color being used.
+		 * Date: April 16, 2014
+		 */
+		Color getActiveColor() {
+			return activeColor;
 		}
 		
 	private:
@@ -57,17 +67,25 @@ class ColorSelector : Composite {
 		 * Changes the color to the given color.
 		 */
 		void changeColor(RGB rgb) {
+			if (activeColor !is null) {
+				colorManager.removeRef(rgb);
+			}
+			
 			activeColor = colorManager.getColor(rgb);
+			colorManager.addRef(rgb);
 			canvas.redraw();
 		}
 	
+		/**
+		 * Sets up Widgets for the Shell.
+		 */
 		void setupWidgets() {
 			// Label
 			Label colorLabel = new Label(this, SWT.PUSH);
 			colorLabel.setText("Color");
 			
 			// Canvas
-			canvas = new Canvas(this, SWT.NO_BACKGROUND | SWT.PUSH);
+			canvas = new Canvas(this, SWT.NO_BACKGROUND | SWT.BORDER | SWT.PUSH);
 			GridData gridData = new GridData();
 			gridData.widthHint = 100;
 			gridData.heightHint = 24;
@@ -93,18 +111,8 @@ class ColorSelector : Composite {
 					override void paintControl(PaintEvent e) {
 						Rectangle clientArea = canvas.getClientArea();
 					
-						// Draw background color
 						e.gc.setBackground(activeColor);
 						e.gc.fillRectangle(clientArea);
-						
-						// Draw border
-						e.gc.setForeground(display.getSystemColor(SWT.COLOR_GRAY));
-						e.gc.drawLine(0, 0, clientArea.width - 1, 0);
-						e.gc.drawLine(0, 0, 0, clientArea.height - 2);
-						
-						e.gc.setForeground(display.getSystemColor(SWT.COLOR_DARK_GRAY));
-						e.gc.drawLine(0, clientArea.height - 1, clientArea.width - 1, clientArea.height - 1);
-						e.gc.drawLine(clientArea.width - 1, 1, clientArea.width - 1, clientArea.height - 2);
 					}
 			});
 		}

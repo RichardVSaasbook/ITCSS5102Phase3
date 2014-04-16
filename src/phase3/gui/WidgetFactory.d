@@ -1,7 +1,10 @@
 module phase3.gui.WidgetFactory;
 
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.SWT;
 
 import phase3.gui.Dimen;
 
@@ -18,17 +21,15 @@ class WidgetFactory {
 		 * Dimen class.
 		 *
 		 * Params:
-		 * 		direction = The direction the GridLayout is
-		 *					going in. SWT.VERTICAL or
-		 *					SWT.HORIZONTAL.
+		 * 		numColumns = The number of columns for the GridLayout.
+		 *		makeColumnsEqualWidth = Whether or not to make
+		 *					the columns equal width.
 		 * Returns: The GridLayout.
 		 * Date: April 10, 2014
 		 */
-		static GridLayout createGridLayout(int columns) {
-			GridLayout gridLayout = new GridLayout();
+		static GridLayout createGridLayout(int numColumns, bool makeColumnsEqualWidth) {
+			GridLayout gridLayout = new GridLayout(numColumns, makeColumnsEqualWidth);
 			
-			gridLayout.numColumns = columns;
-			gridLayout.makeColumnsEqualWidth = true;
 			gridLayout.marginWidth = Dimen.MARGIN;
 			gridLayout.marginHeight = Dimen.MARGIN;
 			gridLayout.horizontalSpacing = Dimen.SPACING;
@@ -41,6 +42,9 @@ class WidgetFactory {
 		 * Creates a new GridData item with the specified
 		 * column span.
 		 *
+		 * Params:
+		 *		colSpan = The number of columns the GridData
+		 *				should span.
 		 * Returns: The GridData.
 		 * Date: April 10, 2014
 		 */
@@ -51,5 +55,25 @@ class WidgetFactory {
 			gridData.horizontalSpan = colSpan;
 			
 			return gridData;
+		}
+		
+		/**
+		 * Creates a new ScrolledComposite that will scroll
+		 * horizontally and vertically, has a border, and
+		 * fills its parents space.
+		 *
+		 * Params:
+		 *		parent = The Composite that the new
+		 *				ScrolledComposite will be a child of.
+		 * Returns: The ScrolledComposite.
+		 * Date: April 16, 2014
+		 */
+		static ScrolledComposite createScrolledComposite(Composite parent) {
+			ScrolledComposite sc = new ScrolledComposite(parent, SWT.HORIZONTAL | SWT.VERTICAL | SWT.BORDER);
+			sc.setExpandHorizontal(true);
+			sc.setExpandVertical(true);
+			sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			
+			return sc;
 		}
 }
