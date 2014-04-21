@@ -3,6 +3,7 @@ module phase3.gui.MainShell;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -11,8 +12,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 
 import phase3.color.ColorManager;
+import phase3.color.RGBColor;
 import phase3.gui.ColorSelector;
+import phase3.gui.ImageCanvas;
 import phase3.gui.WidgetFactory;
+import phase3.listeners.PixelClickListener;
 
 /**
  * The MainShell class is the Shell window that runs the
@@ -35,10 +39,27 @@ class MainShell : Shell {
 			setText("Phase 3: Simple Image Viewer and Editor");
 			setMenuBar(createMenuBar());
 			setLayout(WidgetFactory.createGridLayout(2, true));
-			new ColorSelector(this, colorManager);
+			ColorSelector colorSelector = new ColorSelector(this, colorManager);
 			ScrolledComposite editor = WidgetFactory.createScrolledComposite(this);
 			ScrolledComposite preview = WidgetFactory.createScrolledComposite(this);
-	
+			
+			ImageCanvas editCanvas = new ImageCanvas(editor, colorManager, display.getSystemColor(SWT.COLOR_GRAY), 20, 20, 25, 25, true);
+			editor.setContent(editCanvas);
+			
+			ImageCanvas previewCanvas = new ImageCanvas(preview, colorManager, display.getSystemColor(SWT.COLOR_GRAY), 20, 20, 1, 1, false);
+			preview.setContent(previewCanvas);
+			
+			editCanvas.setPixelClickListener(new class PixelClickListener {
+				public:
+					override void onPixelClick(int x, int y) {
+						Color activeColor = colorSelector.getActiveColor();
+						RGBColor rgbColor = new RGBColor(cast(ubyte) activeColor.getRed(), cast(ubyte) activeColor.getGreen(), cast(ubyte) activeColor.getBlue());
+						
+						editCanvas.setPixelColor(rgbColor, x, y);
+						previewCanvas.setPixelColor(rgbColor, x, y);
+					}
+			});
+			
 			open();
 		}
 	

@@ -2,6 +2,7 @@ module phase3.color.RGBColor;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.RGB;
 
 import phase3.color.HSLColor;
 
@@ -68,55 +69,12 @@ class RGBColor {
 		}
 		
 		/**
-		 * Converts this RGBColor to an HSLColor.
-		 *
-		 * See_Also:
-		 *		<a href="http://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/">Converting Between HSL & RGB</a>
-		 * Date: April 9, 2014
+		 * Returns: The RGB object for this RGBColor's red, green
+		 *		and blue values.
+		 * Date: April 20, 2014
 		 */
-		HSLColor toHSLColor() {
-			HSLColor color;
-			
-			real rPrime = red / 255.0;
-			real gPrime = green / 255.0;
-			real bPrime = blue / 255.0;
-			
-			ubyte minB = min(red, green, blue);
-			ubyte maxB = max(red, green, blue);
-			real minR = min(rPrime, gPrime, bPrime);
-			real maxR = max(rPrime, gPrime, bPrime);
-			
-			real lightness = (minR + maxR) / 2.0;
-			uint hue;
-			real saturation;
-			
-			if (minB == maxB) {
-				hue = 0;
-				saturation = 0;
-			}
-			else {
-				saturation = lightness < 0.5 ? (maxR - minR) / (maxR + minR) : (maxR - minR) / (2 - maxR - minR);
-				
-				real huePrime;
-				
-				if (red == maxB) {
-					huePrime = (gPrime - bPrime) / (maxR - minR);
-				}
-				else if (green == maxB) {
-					huePrime = 2 + (bPrime - rPrime) / (maxR - minR);
-				}
-				else {
-					huePrime = 4 + (rPrime - gPrime) / (maxR - minR);
-				}
-				
-				hue = cast(uint) round(huePrime * 60);
-				
-				if (hue < 0) {
-					hue += 360;
-				}
-			}
-			
-			return new HSLColor(hue, saturation, lightness);
+		RGB getRGB() {
+			return new RGB(red, green, blue);
 		}
 	private:
 		ubyte red,
