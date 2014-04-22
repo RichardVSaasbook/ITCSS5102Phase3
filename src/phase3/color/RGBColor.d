@@ -4,11 +4,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.RGB;
 
-import phase3.color.HSLColor;
-
-import std.algorithm;
-import std.math;
-
 /**
  * This is a color represented by a red, green, and blue value.
  *
@@ -75,6 +70,11 @@ class RGBColor {
 		 */
 		RGB getRGB() {
 			return new RGB(red, green, blue);
+		}
+		
+		RGBColor opBinary(string op)(RGBColor rgb) {
+		   static if (op == "-") return new RGBColor(cast(ubyte) (red - rgb.getRed()), cast(ubyte) (green - rgb.getGreen()), cast(ubyte) (blue - rgb.getBlue()));
+		   else static assert(0, "Operator "~op~" not implemented");
 		}
 	private:
 		ubyte red,

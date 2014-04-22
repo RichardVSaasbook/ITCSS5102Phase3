@@ -4,7 +4,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.RGB;
 
-import phase3.color.HSLColor;
 import phase3.color.RGBColor;
 
 /**

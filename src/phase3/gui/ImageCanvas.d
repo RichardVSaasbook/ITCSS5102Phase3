@@ -46,6 +46,7 @@ class ImageCanvas : Canvas {
 			gridData.widthHint = width;
 			gridData.heightHint = height;
 			setLayoutData(gridData);
+			setSize(width, height);
 			
 			pixelColors = new RGBColor[][](width, height);
 			for (int i = 0; i < width; i++) {
@@ -116,6 +117,27 @@ class ImageCanvas : Canvas {
 		
 			pixelColors[x][y] = color;
 			redraw(x * pixelWidth, y * pixelHeight, pixelWidth, pixelHeight, false);
+		}
+		
+		/**
+		 * Returns: The 2-dimensional array of pixel colors.
+		 * Date: April 21, 2014
+		 */
+		RGBColor[][] getPixelColors() {
+			return pixelColors;
+		}
+		
+		/**
+		 * Params:
+		 *		pixelColors = The 2-dimensional array of the colors.
+		 * Date: April 21, 2014
+		 */
+		void setPixelColors(RGBColor[][] pixelColors) {
+			for (int x = 0; x < pixelColors.length; x++) {
+				for (int y = 0; y < pixelColors[x].length; y++) {
+					setPixelColor(pixelColors[x][y], x, y);
+				}
+			}
 		}
 		
 	private:

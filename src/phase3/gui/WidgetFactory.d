@@ -73,6 +73,9 @@ class WidgetFactory {
 			sc.setExpandHorizontal(true);
 			sc.setExpandVertical(true);
 			sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			sc.setMinWidth(50);
+			sc.setMinHeight(50);
+			sc.setMinSize(sc.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			
 			return sc;
 		}
