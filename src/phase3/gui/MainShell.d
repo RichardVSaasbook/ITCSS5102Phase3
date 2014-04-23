@@ -12,6 +12,12 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 
+import std.stdio;
+import std.file; 
+import std.string;
+import std.array;
+import std.conv;
+
 import phase3.color.ColorManager;
 import phase3.color.RGBColor;
 import phase3.gui.ColorSelector;
@@ -121,7 +127,7 @@ class MainShell : Shell {
 			openItem.addSelectionListener(new class SelectionAdapter {
 				public:
 					override void widgetSelected(SelectionEvent e) {
-						FileDialog f = new FileDialog(mainShell, SWT.APPLICATION_MODAL);
+						FileDialog f = new FileDialog(mainShell, SWT.APPLICATION_MODAL|SWT.OPEN);
 						string filename = f.open();
 						
 						openImage(filename);
@@ -133,7 +139,10 @@ class MainShell : Shell {
 			saveItem.addSelectionListener(new class SelectionAdapter {
 				public:
 					override void widgetSelected(SelectionEvent e) {
-						// TODO: open save image file dialog.
+						FileDialog f = new FileDialog(mainShell, SWT.APPLICATION_MODAL|SWT.SAVE);
+						string filename = f.open();
+						
+						saveImage(filename);
 					}
 			});
 			
@@ -189,9 +198,47 @@ class MainShell : Shell {
 		 * Opens up an image.
 		 */
 		void openImage(string filename) {
-		
+			File file = File(filename, "r");
+			char[] buffer;
+			int i=0;
+			file.readln(buffer);
+			int width = to!int(chomp(buffer));
+			file.readln(buffer);
+			int height = to!int(chomp(buffer));
+			RGBColor[][] colors = new RGBColor[][](width, height);
+			while(file.readln(buffer)){
+				int[] rgb = to!(int[])(split(cast(string)chomp(buffer)));
+				int x = i/width;
+				int y = i%width;
+				colors[x][y] = new RGBColor(cast(ubyte)rgb[0],cast(ubyte)rgb[1],cast(ubyte)rgb[2]);
+				i++;
+			}
+
+			file.close();
+			setupCanvases(width, height);
+			editCanvas.setPixelColors(colors);
+			previewCanvas.setPixelColors(colors);
 		}
-		
+		void saveImage(string filename)
+		{
+			uint width = editCanvas.getWidth();
+			uint height = editCanvas.getHeight();
+			File outFile = File(filename, "w");
+			RGBColor[][] colors = editCanvas.getPixelColors();
+			outFile.writeln(width);
+			outFile.writeln(height);
+			for(int x = 0; x < width; x++){
+				
+				for(int y = 0; y < height; y++){
+					RGBColor color = colors[x][y];
+					outFile.writeln((to!string(color.getRed())) ~" " ~ (to!string(color.getGreen())) ~" "~ (to!string(color.getBlue())));
+					
+				}
+				
+			}
+
+			
+		}
 		/*
 		 * Used to redraw the ImageCanvases as their containing
 		 * ScrolledComposites are scrolled.

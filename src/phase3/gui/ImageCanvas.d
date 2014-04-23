@@ -141,6 +141,14 @@ class ImageCanvas : Canvas {
 				}
 			}
 		}
+		uint getWidth()
+		{
+			return width;
+		}
+		uint getHeight()
+		{
+			return height;
+		}
 		
 	private:
 		ColorManager colorManager;
