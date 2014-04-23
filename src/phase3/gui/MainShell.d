@@ -54,6 +54,14 @@ class MainShell : Shell {
 			editor = WidgetFactory.createScrolledComposite(this);
 			preview = WidgetFactory.createScrolledComposite(this);
 			
+			ScrollBarSelect editorScrollBarSelect = new ScrollBarSelect(editor);
+			ScrollBarSelect previewScrollBarSelect = new ScrollBarSelect(preview);
+			
+			editor.getHorizontalBar().addSelectionListener(editorScrollBarSelect);
+			editor.getVerticalBar().addSelectionListener(editorScrollBarSelect);
+			preview.getHorizontalBar().addSelectionListener(previewScrollBarSelect);
+			preview.getVerticalBar().addSelectionListener(previewScrollBarSelect);
+			
 			setupCanvases(1, 1);
 			
 			open();
@@ -182,5 +190,25 @@ class MainShell : Shell {
 		 */
 		void openImage(string filename) {
 		
+		}
+		
+		/*
+		 * Used to redraw the ImageCanvases as their containing
+		 * ScrolledComposites are scrolled.
+		 */
+		class ScrollBarSelect : SelectionAdapter {
+			public:
+				this(ScrolledComposite composite) {
+					this.composite = composite;
+				}
+			
+				override void widgetSelected(SelectionEvent e) {
+					if (composite.getContent() !is null) {
+						composite.getContent().redraw();
+					}
+				}
+			
+			private:
+				ScrolledComposite composite;
 		}
 }

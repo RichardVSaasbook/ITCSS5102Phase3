@@ -43,10 +43,10 @@ class ImageCanvas : Canvas {
 			this.showGrid = showGrid;
 			
 			GridData gridData = new GridData();
-			gridData.widthHint = width;
-			gridData.heightHint = height;
+			gridData.widthHint = width * pixelWidth;
+			gridData.heightHint = height * pixelHeight;
 			setLayoutData(gridData);
-			setSize(width, height);
+			setSize(width * pixelWidth, height * pixelHeight);
 			
 			pixelColors = new RGBColor[][](width, height);
 			for (int i = 0; i < width; i++) {
@@ -113,10 +113,12 @@ class ImageCanvas : Canvas {
 		 * Date: April 20, 2014
 		 */
 		void setPixelColor(RGBColor color, int x, int y) {
-			lastChangedColor = pixelColors[x][y];
+			if (x < width && y < height) {
+				lastChangedColor = pixelColors[x][y];
 		
-			pixelColors[x][y] = color;
-			redraw(x * pixelWidth, y * pixelHeight, pixelWidth, pixelHeight, false);
+				pixelColors[x][y] = color;
+				redraw(x * pixelWidth, y * pixelHeight, pixelWidth, pixelHeight, false);
+			}
 		}
 		
 		/**

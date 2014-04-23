@@ -1,10 +1,10 @@
 module phase3.gui.WidgetFactory;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.SWT;
 
 import phase3.gui.Dimen;
 
@@ -69,9 +69,7 @@ class WidgetFactory {
 		 * Date: April 16, 2014
 		 */
 		static ScrolledComposite createScrolledComposite(Composite parent) {
-			ScrolledComposite sc = new ScrolledComposite(parent, SWT.HORIZONTAL | SWT.VERTICAL | SWT.BORDER);
-			sc.setExpandHorizontal(true);
-			sc.setExpandVertical(true);
+			ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 			sc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			sc.setMinWidth(50);
 			sc.setMinHeight(50);
