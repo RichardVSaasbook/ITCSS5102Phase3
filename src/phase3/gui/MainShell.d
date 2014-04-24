@@ -200,6 +200,8 @@ class MainShell : Shell {
 		void openImage(string filename) {
 			try {
 				File file = File(filename, "r");
+				new RemoveRefsAsyncTask(display, colorManager, editCanvas.getPixelColors());
+				
 				char[] buffer;
 				int i=0;
 			
