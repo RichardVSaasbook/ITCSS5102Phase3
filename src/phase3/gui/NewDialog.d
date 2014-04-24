@@ -106,7 +106,24 @@ class NewDialog : Shell {
 					
 					override void mouseDown(MouseEvent e) {
 						if (createNewImageListener !is null) {
-							createNewImageListener.onCreateNewImage(to!int(widthText.getText()), to!int(heightText.getText()));
+							try {
+								int width = to!int(widthText.getText());
+								int height = to!int(heightText.getText());
+								
+								if (width <= 0) {
+									width = 1;
+								}
+								
+								if (height <= 0) {
+									height = 1;
+								}
+							
+								createNewImageListener.onCreateNewImage(width, height);
+							}
+							catch (Exception e) {
+								// Numbers not entered, just send a 1-by-1 image.
+								createNewImageListener.onCreateNewImage(1, 1);
+							}
 						}
 					}
 			});

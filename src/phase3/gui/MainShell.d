@@ -111,10 +111,10 @@ class MainShell : Shell {
 							public:
 								override void onCreateNewImage(int width, int height) {
 									new RemoveRefsAsyncTask(display, colorManager, editCanvas.getPixelColors());
-									
+								
 									editCanvas.dispose();
 									previewCanvas.dispose();
-									
+								
 									setupCanvases(width, height);
 									newDialog.dispose();
 								}
@@ -198,47 +198,58 @@ class MainShell : Shell {
 		 * Opens up an image.
 		 */
 		void openImage(string filename) {
-			File file = File(filename, "r");
-			char[] buffer;
-			int i=0;
-			file.readln(buffer);
-			int width = to!int(chomp(buffer));
-			file.readln(buffer);
-			int height = to!int(chomp(buffer));
-			RGBColor[][] colors = new RGBColor[][](width, height);
-			while(file.readln(buffer)){
-				int[] rgb = to!(int[])(split(cast(string)chomp(buffer)));
-				int x = i/width;
-				int y = i%width;
-				colors[x][y] = new RGBColor(cast(ubyte)rgb[0],cast(ubyte)rgb[1],cast(ubyte)rgb[2]);
-				i++;
-			}
-
-			file.close();
-			setupCanvases(width, height);
-			editCanvas.setPixelColors(colors);
-			previewCanvas.setPixelColors(colors);
-		}
-		void saveImage(string filename)
-		{
-			uint width = editCanvas.getWidth();
-			uint height = editCanvas.getHeight();
-			File outFile = File(filename, "w");
-			RGBColor[][] colors = editCanvas.getPixelColors();
-			outFile.writeln(width);
-			outFile.writeln(height);
-			for(int x = 0; x < width; x++){
-				
-				for(int y = 0; y < height; y++){
-					RGBColor color = colors[x][y];
-					outFile.writeln((to!string(color.getRed())) ~" " ~ (to!string(color.getGreen())) ~" "~ (to!string(color.getBlue())));
-					
-				}
-				
-			}
-
+			try {
+				File file = File(filename, "r");
+				char[] buffer;
+				int i=0;
 			
+				file.readln(buffer);
+				int width = to!int(chomp(buffer));
+				file.readln(buffer);
+				int height = to!int(chomp(buffer));
+				RGBColor[][] colors = new RGBColor[][](width, height);
+			
+				while(file.readln(buffer)) {
+					int[] rgb = to!(int[])(split(cast(string) chomp(buffer)));
+					int x = i / width;
+					int y = i % width;
+					colors[x][y] = new RGBColor(cast(ubyte) rgb[0],cast(ubyte) rgb[1],cast(ubyte) rgb[2]);
+					i++;
+				}
+
+				file.close();
+				setupCanvases(width, height);
+				editCanvas.setPixelColors(colors);
+				previewCanvas.setPixelColors(colors);
+			}
+			catch (Exception e) {}
 		}
+		
+		/*
+		 * Saves an image.
+		 */
+		void saveImage(string filename) {
+			try {
+				File file = File(filename, "w");
+				uint width = editCanvas.getWidth();
+				uint height = editCanvas.getHeight();
+				RGBColor[][] colors = editCanvas.getPixelColors();
+			
+				file.writeln(width);
+				file.writeln(height);
+			
+				for(int x = 0; x < width; x++){
+					for(int y = 0; y < height; y++){
+						RGBColor color = colors[x][y];
+						file.writeln(to!string(color.getRed()) ~ " " ~ to!string(color.getGreen()) ~ " " ~ to!string(color.getBlue()));
+					}
+				}
+
+				file.close();
+			}
+			catch (Exception e) {}
+		}
+		
 		/*
 		 * Used to redraw the ImageCanvases as their containing
 		 * ScrolledComposites are scrolled.

@@ -51,7 +51,9 @@ class ImageCanvas : Canvas {
 			pixelColors = new RGBColor[][](width, height);
 			for (int i = 0; i < width; i++) {
 				for (int j = 0; j < height; j++) {
-					pixelColors[i][j] = new RGBColor(255, 255, 255);
+					RGBColor white = new RGBColor(255, 255, 255);
+					pixelColors[i][j] = white;
+					colorManager.addRef(white.getRGB());
 				}
 			}
 			
@@ -141,12 +143,20 @@ class ImageCanvas : Canvas {
 				}
 			}
 		}
-		uint getWidth()
-		{
+		
+		/**
+		 * Returns: The width of this ImageCanvas.
+		 * Date: April 23, 2014
+		 */
+		uint getWidth() {
 			return width;
 		}
-		uint getHeight()
-		{
+		
+		/**
+		 * Returns: The height of this ImageCanvas.
+		 * Date: April 23, 2014
+		 */
+		uint getHeight() {
 			return height;
 		}
 		
