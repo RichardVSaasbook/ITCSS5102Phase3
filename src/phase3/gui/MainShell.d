@@ -203,7 +203,7 @@ class MainShell : Shell {
 				new RemoveRefsAsyncTask(display, colorManager, editCanvas.getPixelColors());
 				
 				char[] buffer;
-				int i=0;
+				int i = 0;
 			
 				file.readln(buffer);
 				int width = to!int(chomp(buffer));
@@ -212,10 +212,10 @@ class MainShell : Shell {
 				RGBColor[][] colors = new RGBColor[][](width, height);
 			
 				while(file.readln(buffer)) {
-					int[] rgb = to!(int[])(split(cast(string) chomp(buffer)));
+					int[] rgb = to!(int[])(chomp(buffer));
 					int x = i / width;
 					int y = i % width;
-					colors[x][y] = new RGBColor(cast(ubyte) rgb[0],cast(ubyte) rgb[1],cast(ubyte) rgb[2]);
+					colors[x][y] = new RGBColor(cast(ubyte) rgb[0], cast(ubyte) rgb[1], cast(ubyte) rgb[2]);
 					i++;
 				}
 
@@ -243,7 +243,7 @@ class MainShell : Shell {
 				for(int x = 0; x < width; x++){
 					for(int y = 0; y < height; y++){
 						RGBColor color = colors[x][y];
-						file.writeln(to!string(color.getRed()) ~ " " ~ to!string(color.getGreen()) ~ " " ~ to!string(color.getBlue()));
+						file.writeln("[" ~ to!string(color.getRed()) ~ ", " ~ to!string(color.getGreen()) ~ ", " ~ to!string(color.getBlue()) ~ "]");
 					}
 				}
 
